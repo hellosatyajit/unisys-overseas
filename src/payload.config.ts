@@ -11,11 +11,13 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
-import { Footer } from './Footer/config'
-import { Header } from './Header/config'
+import { Footer } from './components/Footer/config'
+import { Header } from './components/Header/config'
+import { HeroCarousel, HeroContent } from './components/Hero/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { Services } from './components/Services/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -64,7 +66,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, HeroContent, HeroCarousel, Services, Footer],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

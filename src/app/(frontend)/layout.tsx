@@ -1,13 +1,11 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
-import { GeistMono } from 'geist/font/mono'
-import { GeistSans } from 'geist/font/sans'
+import { Gabarito } from 'next/font/google'
 import React from 'react'
 
-import { AdminBar } from '@/components/AdminBar'
-import { Footer } from '@/Footer/Component'
-import { Header } from '@/Header/Component'
+import { Footer } from '@/components/Footer/Component'
+import { Header } from '@/components/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -16,11 +14,13 @@ import { draftMode } from 'next/headers'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
+const gabarito = Gabarito({ subsets: ['latin'] })
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
   return (
-    <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html className={cn(gabarito.className)} lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
@@ -28,11 +28,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <Providers>
-          <AdminBar
+          {/* <AdminBar
             adminBarProps={{
               preview: isEnabled,
             }}
-          />
+          /> */}
 
           <Header />
           {children}

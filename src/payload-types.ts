@@ -54,6 +54,7 @@ export type SupportedTimezones =
   | 'Asia/Singapore'
   | 'Asia/Tokyo'
   | 'Asia/Seoul'
+  | 'Australia/Brisbane'
   | 'Australia/Sydney'
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
@@ -101,10 +102,16 @@ export interface Config {
   };
   globals: {
     header: Header;
+    'hero-content': HeroContent;
+    'hero-carousel': HeroCarousel;
+    services: Service;
     footer: Footer;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
+    'hero-content': HeroContentSelect<false> | HeroContentSelect<true>;
+    'hero-carousel': HeroCarouselSelect<false> | HeroCarouselSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
   locale: null;
@@ -624,6 +631,7 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             defaultValue?: string | null;
+            placeholder?: string | null;
             options?:
               | {
                   label: string;
@@ -1355,6 +1363,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               defaultValue?: T;
+              placeholder?: T;
               options?:
                 | T
                 | {
@@ -1558,6 +1567,121 @@ export interface Header {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-content".
+ */
+export interface HeroContent {
+  id: string;
+  title: string;
+  subtitle: string;
+  primaryButton: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: string | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: string | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  secondaryButton: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: string | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: string | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  features?:
+    | {
+        title: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-carousel".
+ */
+export interface HeroCarousel {
+  id: string;
+  carouselItems?:
+    | {
+        title: string;
+        subtitle: string;
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        image: string | Media;
+        order: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: string;
+  title: string;
+  subtitle: string;
+  services?:
+    | {
+        title: string;
+        subtitle: string;
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        image: string | Media;
+        order: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer".
  */
 export interface Footer {
@@ -1602,6 +1726,97 @@ export interface HeaderSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-content_select".
+ */
+export interface HeroContentSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  primaryButton?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
+  secondaryButton?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
+  features?:
+    | T
+    | {
+        title?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-carousel_select".
+ */
+export interface HeroCarouselSelect<T extends boolean = true> {
+  carouselItems?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        image?: T;
+        order?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  services?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        image?: T;
+        order?: T;
         id?: T;
       };
   updatedAt?: T;
