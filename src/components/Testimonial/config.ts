@@ -1,10 +1,9 @@
 import type { GlobalConfig } from 'payload'
 
-import { link } from '@/fields/link'
-import { revalidateServices } from './hooks/revalidateServices'
+import { revalidateTestimonial } from './hooks/revalidateTestimonial'
 
-export const Services: GlobalConfig = {
-  slug: 'services',
+export const Testimonial: GlobalConfig = {
+  slug: 'testimonial',
   access: {
     read: () => true,
   },
@@ -15,16 +14,11 @@ export const Services: GlobalConfig = {
       required: true,
     },
     {
-      name: 'subtitle',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'services',
+      name: 'testimonials',
       type: 'array',
       fields: [
         {
-          name: 'title',
+          name: 'name',
           type: 'text',
           required: true,
         },
@@ -33,9 +27,11 @@ export const Services: GlobalConfig = {
           type: 'text',
           required: true,
         },
-        link({
-          appearances: false,
-        }),
+        {
+          name: 'testimony',
+          type: 'text',
+          required: true,
+        },
         {
           name: 'image',
           type: 'upload',
@@ -43,16 +39,15 @@ export const Services: GlobalConfig = {
           required: true,
         },
       ],
-      maxRows: 6,
       admin: {
         initCollapsed: true,
         components: {
-          RowLabel: '@/components/Services/RowLabel#RowLabel',
+          RowLabel: '@/components/Testimonial/RowLabel#RowLabel',
         },
       },
     },
   ],
   hooks: {
-    afterChange: [revalidateServices],
+    afterChange: [revalidateTestimonial],
   },
 }

@@ -105,6 +105,8 @@ export interface Config {
     'hero-content': HeroContent;
     'hero-carousel': HeroCarousel;
     services: Service;
+    countries: Country;
+    testimonial: Testimonial;
     footer: Footer;
   };
   globalsSelect: {
@@ -112,6 +114,8 @@ export interface Config {
     'hero-content': HeroContentSelect<false> | HeroContentSelect<true>;
     'hero-carousel': HeroCarouselSelect<false> | HeroCarouselSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
+    countries: CountriesSelect<false> | CountriesSelect<true>;
+    testimonial: TestimonialSelect<false> | TestimonialSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
   locale: null;
@@ -1638,7 +1642,6 @@ export interface HeroCarousel {
           label: string;
         };
         image: string | Media;
-        order: number;
         id?: string | null;
       }[]
     | null;
@@ -1673,7 +1676,44 @@ export interface Service {
           label: string;
         };
         image: string | Media;
-        order: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries".
+ */
+export interface Country {
+  id: string;
+  title: string;
+  subtitle: string;
+  countries?:
+    | {
+        title: string;
+        link: string;
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonial".
+ */
+export interface Testimonial {
+  id: string;
+  title: string;
+  testimonials?:
+    | {
+        name: string;
+        subtitle: string;
+        testimony: string;
+        image: string | Media;
         id?: string | null;
       }[]
     | null;
@@ -1787,7 +1827,6 @@ export interface HeroCarouselSelect<T extends boolean = true> {
               label?: T;
             };
         image?: T;
-        order?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -1816,7 +1855,44 @@ export interface ServicesSelect<T extends boolean = true> {
               label?: T;
             };
         image?: T;
-        order?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries_select".
+ */
+export interface CountriesSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  countries?:
+    | T
+    | {
+        title?: T;
+        link?: T;
+        image?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonial_select".
+ */
+export interface TestimonialSelect<T extends boolean = true> {
+  title?: T;
+  testimonials?:
+    | T
+    | {
+        name?: T;
+        subtitle?: T;
+        testimony?: T;
+        image?: T;
         id?: T;
       };
   updatedAt?: T;

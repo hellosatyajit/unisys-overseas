@@ -32,17 +32,12 @@ export const HeroCarousel: GlobalConfig = {
           relationTo: 'media',
           required: true,
         },
-        {
-          name: 'order',
-          type: 'number',
-          required: true,
-        },
       ],
       maxRows: 6,
       admin: {
         initCollapsed: true,
         components: {
-          RowLabel: '@/Hero/RowLabel#RowLabel',
+          RowLabel: '@/components/Hero/RowLabel#RowLabel',
         },
       },
     },

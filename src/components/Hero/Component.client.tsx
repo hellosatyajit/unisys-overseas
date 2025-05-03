@@ -14,7 +14,7 @@ interface HeroCarouselClientProps {
 export const HeroCarouselClient: React.FC<HeroCarouselClientProps> = ({ data }) => {
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  const slides = data.carouselItems?.sort((a, b) => a.order - b.order) ?? []
+  const slides = data.carouselItems ?? []
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))

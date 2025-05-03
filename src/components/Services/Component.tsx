@@ -13,7 +13,7 @@ export async function Services() {
     <>
       <section className="py-16 bg-white container mx-auto px-4 space-y-8" id="services">
         <div className="space-y-2 col-span-6">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 lg:mb-0 mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary lg:mb-0 mb-4">
             {services.title}
           </h2>
           <p className="text-gray-600 lg:max-w-lg">{services.subtitle}</p>
@@ -47,17 +47,6 @@ export async function Services() {
             </Link>
           </Button>
         )}
-      </section>
-
-      <section className="p-8 sm:p-16 bg-blue-50 sm:w-fit m-4 sm:mx-auto space-y-8 rounded-3xl">
-        <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">
-          Not Sure What You Looking for?
-        </h2>
-        <Button size="lg" className="rounded-full sm:mx-auto block w-fit" asChild>
-          <Link href="/contact" className="gap-2 text-xl flex justify-center items-center">
-            Contact Us <ArrowRightIcon />
-          </Link>
-        </Button>
       </section>
     </>
   )

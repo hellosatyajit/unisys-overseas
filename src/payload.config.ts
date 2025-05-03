@@ -18,6 +18,8 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { Services } from './components/Services/config'
+import { Countries } from './components/Countries/config'
+import { Testimonial } from './components/Testimonial/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -66,7 +68,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, HeroContent, HeroCarousel, Services, Footer],
+  globals: [Header, HeroContent, HeroCarousel, Services, Countries, Testimonial, Footer],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder
