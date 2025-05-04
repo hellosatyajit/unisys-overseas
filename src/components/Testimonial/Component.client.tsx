@@ -40,7 +40,7 @@ export function TestimonialClient({ testimonial }: { testimonial: Testimonial })
                 <g
                   id="quote_left_fill"
                   stroke="none"
-                  stroke-width="1"
+                  strokeWidth="1"
                   fill="none"
                   fillRule="evenodd"
                 >
@@ -70,7 +70,7 @@ export function TestimonialClient({ testimonial }: { testimonial: Testimonial })
               - {items?.[currentSlide]?.name}, {items?.[currentSlide]?.subtitle}
             </p>
           </div>
-          <div className="relative md:aspect-square flex overflow-x-scroll md:overflow-hidden md:grid md:grid-cols-5 md:grid-rows-5 flex-none w-dvw md:w-auto md:h-[500px]">
+          <div className="relative md:aspect-square flex overflow-x-scroll md:overflow-hidden md:grid md:grid-cols-5 md:grid-rows-5 flex-none w-dvw md:w-auto md:h-[500px] rounded-3xl">
             {testimonial?.testimonials?.slice(0, 25)?.map((testimonial, index) => (
               <button
                 key={index}

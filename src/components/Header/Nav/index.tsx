@@ -8,6 +8,7 @@ import type { Header as HeaderType } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/utilities/ui'
+import InquiryForm from '@/components/Forms/Inquiry'
 
 export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   const navItems = data?.navItems || []
@@ -25,13 +26,9 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
             className={cn('text-base', pathname === link.url ? 'text-primary' : 'text-secondary')}
           />
         ))}
-        <CMSLink
-          appearance="default"
-          className="text-base ml-4"
-          label="Inquiry Now"
-          url="/inquiry"
-          newTab={false}
-        />
+        <div className="ml-4">
+          <InquiryForm />
+        </div>
       </nav>
 
       <button
@@ -56,12 +53,15 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
             />
           ))}
           <CMSLink
-            appearance="default"
-            className="block text-base text-center"
-            label="Inquiry Now"
-            url="/inquiry"
-            newTab={false}
+            appearance="link"
+            label="Search"
+            url="/search"
+            className={cn(
+              'block text-base',
+              pathname === '/search' ? 'text-primary' : 'text-secondary',
+            )}
           />
+          <InquiryForm />
         </div>
       )}
     </div>

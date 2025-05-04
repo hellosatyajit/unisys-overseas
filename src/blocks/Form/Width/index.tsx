@@ -6,7 +6,14 @@ export const Width: React.FC<{
   width?: number | string
 }> = ({ children, className, width }) => {
   return (
-    <div className={className} style={{ maxWidth: width ? `${width}%` : undefined }}>
+    <div
+      className={className}
+      style={{
+        gridColumn: width
+          ? `${Math.ceil((Number(width) / 100) * 2)} span / ${Math.ceil((Number(width) / 100) * 2)} span`
+          : undefined,
+      }}
+    >
       {children}
     </div>
   )

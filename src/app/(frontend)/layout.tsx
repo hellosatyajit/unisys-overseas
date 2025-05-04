@@ -13,6 +13,8 @@ import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import { AdminBar } from '@/components/AdminBar'
+import InquiryForm from '@/components/Forms/Inquiry'
 
 const gabarito = Gabarito({ subsets: ['latin'] })
 
@@ -28,15 +30,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <Providers>
-          {/* <AdminBar
+          <AdminBar
             adminBarProps={{
               preview: isEnabled,
             }}
-          /> */}
+          />
 
           <Header />
           {children}
           <Footer />
+          <div className="fixed bottom-0 inset-x-0 bg-background z-50 sm:hidden">
+            <InquiryForm fullWidth={true} />
+          </div>
         </Providers>
       </body>
     </html>

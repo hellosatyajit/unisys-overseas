@@ -3,6 +3,7 @@ import type { Faq } from '@/payload-types'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
 import { Button } from '../ui/button'
 import Link from 'next/link'
+import InquiryForm from '../Forms/Inquiry'
 
 export async function FAQs() {
   const faqs = (await getCachedGlobal('faqs', 1)()) as Faq
@@ -36,9 +37,7 @@ export async function FAQs() {
             <Link href="mailto:connect@unisysoverseas.com">connect@unisysoverseas.com</Link>
           </Button>
           <p>or fill out the form below:</p>
-          <Button asChild>
-            <Link href="/contact">Inquiry Form</Link>
-          </Button>
+          <InquiryForm />
         </div>
       </div>
     </section>
