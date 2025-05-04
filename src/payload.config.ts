@@ -20,6 +20,8 @@ import { getServerSideURL } from './utilities/getURL'
 import { Services } from './components/Services/config'
 import { Countries } from './components/Countries/config'
 import { Testimonial } from './components/Testimonial/config'
+import { Faqs } from './components/FAQs/config'
+import { WhyUs } from './components/WhyUs/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -68,7 +70,17 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, HeroContent, HeroCarousel, Services, Countries, Testimonial, Footer],
+  globals: [
+    Header,
+    HeroContent,
+    HeroCarousel,
+    Services,
+    Countries,
+    Testimonial,
+    Faqs,
+    WhyUs,
+    Footer,
+  ],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

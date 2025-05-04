@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { ArrowRightIcon } from 'lucide-react'
 import { Testimonial } from '@/components/Testimonial/Component'
+import { FAQs } from '@/components/FAQs/Component'
+import { WhyUs } from '@/components/WhyUs/Component'
 
 export default async function HomePage() {
   return (
@@ -27,6 +29,8 @@ export default async function HomePage() {
       </section>
       <Services />
       <Testimonial />
+      <FAQs />
+      <WhyUs />
     </>
   )
 }

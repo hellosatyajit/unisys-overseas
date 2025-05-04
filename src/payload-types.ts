@@ -107,6 +107,8 @@ export interface Config {
     services: Service;
     countries: Country;
     testimonial: Testimonial;
+    faqs: Faq;
+    'why-us': WhyUs;
     footer: Footer;
   };
   globalsSelect: {
@@ -116,6 +118,8 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     countries: CountriesSelect<false> | CountriesSelect<true>;
     testimonial: TestimonialSelect<false> | TestimonialSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
+    'why-us': WhyUsSelect<false> | WhyUsSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
   locale: null;
@@ -1722,6 +1726,42 @@ export interface Testimonial {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: string;
+  title: string;
+  subtitle: string;
+  faqs?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "why-us".
+ */
+export interface WhyUs {
+  id: string;
+  title: string;
+  subtitle: string;
+  reasons?:
+    | {
+        title: string;
+        subtitle: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer".
  */
 export interface Footer {
@@ -1746,6 +1786,18 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  contact: {
+    call: string;
+    chat: string;
+    email: string;
+    address: string;
+  };
+  socials: {
+    facebook: string;
+    twitter: string;
+    instagram: string;
+    linkedin: string;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1901,6 +1953,42 @@ export interface TestimonialSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "why-us_select".
+ */
+export interface WhyUsSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  reasons?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
@@ -1917,6 +2005,22 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  contact?:
+    | T
+    | {
+        call?: T;
+        chat?: T;
+        email?: T;
+        address?: T;
+      };
+  socials?:
+    | T
+    | {
+        facebook?: T;
+        twitter?: T;
+        instagram?: T;
+        linkedin?: T;
       };
   updatedAt?: T;
   createdAt?: T;

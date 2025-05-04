@@ -25,6 +25,58 @@ export const Footer: GlobalConfig = {
         },
       },
     },
+    {
+      name: 'contact',
+      type: 'group',
+      fields: [
+        {
+          name: 'call',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'chat',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'email',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'address',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'socials',
+      type: 'group',
+      fields: [
+        {
+          name: 'facebook',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'twitter',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'instagram',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'linkedin',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
   ],
   hooks: {
     afterChange: [revalidateFooter],
