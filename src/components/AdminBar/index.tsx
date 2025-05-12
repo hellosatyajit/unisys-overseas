@@ -37,9 +37,11 @@ export const AdminBar: React.FC<{
   const { adminBarProps } = props || {}
   const segments = useSelectedLayoutSegments()
   const [show, setShow] = useState(false)
-  const collection = (
-    collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages'
-  ) as keyof typeof collectionLabels
+  const collection =
+    // @ts-ignore
+    (collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages') as
+      | keyof typeof collectionLabels
+      | undefined
   const router = useRouter()
 
   const onAuthChange = React.useCallback((user: PayloadMeUser) => {
@@ -65,8 +67,10 @@ export const AdminBar: React.FC<{
           cmsURL={getClientSideURL()}
           collectionSlug={collection}
           collectionLabels={{
-            plural: collectionLabels[collection]?.plural || 'Pages',
-            singular: collectionLabels[collection]?.singular || 'Page',
+            plural:
+              collectionLabels[collection as keyof typeof collectionLabels]?.plural || 'Pages',
+            singular:
+              collectionLabels[collection as keyof typeof collectionLabels]?.singular || 'Page',
           }}
           logo={<Title />}
           onAuthChange={onAuthChange}

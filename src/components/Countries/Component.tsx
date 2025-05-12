@@ -2,7 +2,6 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import React from 'react'
 
 import type { Country, Media } from '@/payload-types'
-import { Button } from '../ui/button'
 import Link from 'next/link'
 import { ArrowRightIcon } from 'lucide-react'
 
