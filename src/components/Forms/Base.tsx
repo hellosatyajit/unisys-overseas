@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import { FormBlock } from '@/blocks/Form/Component'
 
 import { useState } from 'react'
+import { Skeleton } from '../ui/skeleton'
 
 export default function BaseForm({ formId }: { formId: string }) {
   const [cmsForm, setCmsForm] = useState<any>(null)
@@ -19,7 +20,17 @@ export default function BaseForm({ formId }: { formId: string }) {
       .catch((err) => setError('Error loading form'))
   }, [formId])
 
-  if (!cmsForm) return <div>Loading...</div>
+  if (!cmsForm)
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-10"></Skeleton>
+        <Skeleton className="h-10"></Skeleton>
+        <Skeleton className="h-10"></Skeleton>
+        <Skeleton className="h-10"></Skeleton>
+        <Skeleton className="h-20"></Skeleton>
+        <Skeleton className="h-10 w-20"></Skeleton>
+      </div>
+    )
 
   if (error) return <div>{error}</div>
 

@@ -9,9 +9,10 @@ import { SearchIcon } from 'lucide-react'
 
 interface HeaderClientProps {
   data: Header
+  scheduleCallLink: string
 }
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
+export const HeaderClient: React.FC<HeaderClientProps> = ({ data, scheduleCallLink }) => {
   return (
     <>
       <nav className="bg-blue-950 py-2 text-sm sticky top-0 z-20">
@@ -26,7 +27,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             </a>
           </div>
           <div className="items-center space-x-4 hidden sm:flex">
-            <a href="/" target="_blank" rel="noreferrer" className="text-white hover:underline">
+            <a
+              href={scheduleCallLink}
+              target="_blank"
+              rel="noreferrer"
+              className="text-white hover:underline"
+            >
               Book free consultation
             </a>
             <a href="/search" className="text-white">

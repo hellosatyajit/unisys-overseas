@@ -27,9 +27,9 @@ export async function Footer() {
             <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
               LINKS
             </h2>
-            <nav className="list-none mb-10">
+            <nav className="list-none mb-10 flex flex-col gap-1">
               {navItems.map(({ link }, i) => {
-                return <CMSLink className="text-white" key={i} {...link} />
+                return <CMSLink key={i} className="hover:underline" {...link} />
               })}
             </nav>
           </div>
@@ -64,7 +64,7 @@ export async function Footer() {
         </div>
       </div>
       <div className="bg-gray-100">
-        <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
+        <div className="container mx-auto py-4 pb-14 md:py-4 px-5 flex flex-wrap flex-col sm:flex-row">
           <p className="text-gray-500 text-sm">© {year} Unisys Overseas. All rights reserved.</p>
           <span className="inline-flex sm:ml-auto sm:mt-0 mt-2">
             <a

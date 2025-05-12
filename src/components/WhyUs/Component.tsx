@@ -4,6 +4,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '..
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import { ArrowRightIcon, CalendarIcon, RocketIcon, TargetIcon, UsersIcon } from 'lucide-react'
+import { CONSTANTS } from '@payload-config'
 
 export async function WhyUs() {
   const whyUs = (await getCachedGlobal('why-us', 1)()) as WhyUs
@@ -47,7 +48,7 @@ export async function WhyUs() {
               className="rounded-full text-black group text-lg"
               asChild
             >
-              <Link href="/">
+              <Link href={CONSTANTS.scheduleCallLink} target="_blank">
                 Schedule a Call{' '}
                 <ArrowRightIcon className="ml-2 w-4 h-4 group-hover:translate-x-1.5 transition-all" />
               </Link>

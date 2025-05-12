@@ -106,3 +106,7 @@ export default buildConfig({
     tasks: [],
   },
 })
+
+export const CONSTANTS = {
+  scheduleCallLink: 'https://calendly.com/josh-mccallum/30min',
+}
