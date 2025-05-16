@@ -26,7 +26,9 @@ export async function Countries() {
               className="aspect-square rounded-3xl object-cover"
             />
             <div className="flex items-center gap-2">
-              <h3 className="text-3xl lg:leading-tight font-semibold">{country.title}</h3>
+              <h3 className="text-xl md:text-2xl lg:leading-tight font-semibold">
+                {country.title}
+              </h3>
               <span className="gap-2 text-lg">
                 <ArrowRightIcon
                   size={18}

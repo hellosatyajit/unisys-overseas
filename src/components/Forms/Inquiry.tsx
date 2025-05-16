@@ -23,7 +23,7 @@ export default function InquiryForm({ fullWidth }: { fullWidth?: boolean }) {
           <DialogTitle>Inquiry</DialogTitle>
           <DialogDescription>Fill the form to get in touch with us</DialogDescription>
         </DialogHeader>
-        <BaseForm formId="6817a682bfee97a183ca088f" />
+        <BaseForm formId="6826d9a4c2e3a5456fc4efa6" />
       </DialogContent>
     </Dialog>
   )
