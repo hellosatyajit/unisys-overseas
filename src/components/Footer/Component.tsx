@@ -2,13 +2,14 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
 import React from 'react'
 
-import type { Footer } from '@/payload-types'
+import type { Footer, Service, ServicesCollection } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 
 export async function Footer() {
   const footerData = (await getCachedGlobal('footer', 1)()) as Footer
+  const services = (await getCachedGlobal('services', 0)()) as Service
 
   const navItems = footerData?.navItems || []
 
@@ -23,6 +24,24 @@ export async function Footer() {
           </Link>
         </div>
         <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:justify-end">
+          <div className="px-4">
+            <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
+              SERVICES
+            </h2>
+            <nav className="list-none mb-10 flex flex-col gap-1">
+              {services.services?.map(({ service }, i) => {
+                return (
+                  <CMSLink
+                    key={i}
+                    className="hover:underline"
+                    label={(service as ServicesCollection).title}
+                    url={`/services/${(service as ServicesCollection).slug}`}
+                  />
+                )
+              })}
+            </nav>
+          </div>
+
           <div className="px-4">
             <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
               LINKS

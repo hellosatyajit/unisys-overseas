@@ -12,6 +12,8 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
+import { Services as ServicesCollection } from './collections/Services'
+import { ServiceCountryDetails } from './collections/ServiceCountryDetails'
 import { Footer } from './components/Footer/config'
 import { Header } from './components/Header/config'
 import { HeroCarousel, HeroContent } from './components/Hero/config'
@@ -69,7 +71,7 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Users, ServicesCollection, ServiceCountryDetails],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [
     Header,

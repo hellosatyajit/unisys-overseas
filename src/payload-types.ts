@@ -72,6 +72,8 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    'services-collection': ServicesCollection;
+    'service-country-details': ServiceCountryDetail;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -88,6 +90,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'services-collection': ServicesCollectionSelect<false> | ServicesCollectionSelect<true>;
+    'service-country-details': ServiceCountryDetailsSelect<false> | ServiceCountryDetailsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -743,6 +747,106 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-collection".
+ */
+export interface ServicesCollection {
+  id: string;
+  title: string;
+  /**
+   * A short, catchy phrase that describes the service
+   */
+  tagline: string;
+  description: string;
+  slug: string;
+  featuredImage: string | Media;
+  /**
+   * The text to display on the call-to-action button
+   */
+  ctaLabel: string;
+  isActive?: boolean | null;
+  /**
+   * Order in which this service appears in the list
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-country-details".
+ */
+export interface ServiceCountryDetail {
+  id: string;
+  title: string;
+  description: string;
+  slug: string;
+  service: string | ServicesCollection;
+  country: string;
+  content: {
+    contentType: 'text-image' | 'full-width';
+    text: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    image?: (string | null) | Media;
+    backgroundColor?: ('primary' | 'gray') | null;
+    id?: string | null;
+  }[];
+  serviceType: 'student-visa';
+  popularUniversities?:
+    | {
+        name: string;
+        description?: string | null;
+        image?: (string | null) | Media;
+        website?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  popularCities?:
+    | {
+        name: string;
+        description?: string | null;
+        image?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  faqs?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -932,6 +1036,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'services-collection';
+        value: string | ServicesCollection;
+      } | null)
+    | ({
+        relationTo: 'service-country-details';
+        value: string | ServiceCountryDetail;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1289,6 +1401,69 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-collection_select".
+ */
+export interface ServicesCollectionSelect<T extends boolean = true> {
+  title?: T;
+  tagline?: T;
+  description?: T;
+  slug?: T;
+  featuredImage?: T;
+  ctaLabel?: T;
+  isActive?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-country-details_select".
+ */
+export interface ServiceCountryDetailsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  slug?: T;
+  service?: T;
+  country?: T;
+  content?:
+    | T
+    | {
+        contentType?: T;
+        text?: T;
+        image?: T;
+        backgroundColor?: T;
+        id?: T;
+      };
+  serviceType?: T;
+  popularUniversities?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        image?: T;
+        website?: T;
+        id?: T;
+      };
+  popularCities?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        image?: T;
+        id?: T;
+      };
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1662,24 +1837,10 @@ export interface Service {
   subtitle: string;
   services?:
     | {
-        title: string;
-        subtitle: string;
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: string | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: string | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
-        image: string | Media;
+        /**
+         * Select a service from the services collection
+         */
+        service: string | ServicesCollection;
         id?: string | null;
       }[]
     | null;
@@ -1895,18 +2056,7 @@ export interface ServicesSelect<T extends boolean = true> {
   services?:
     | T
     | {
-        title?: T;
-        subtitle?: T;
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-            };
-        image?: T;
+        service?: T;
         id?: T;
       };
   updatedAt?: T;

@@ -24,23 +24,13 @@ export const Services: GlobalConfig = {
       type: 'array',
       fields: [
         {
-          name: 'title',
-          type: 'text',
+          name: 'service',
+          type: 'relationship',
+          relationTo: 'services-collection',
           required: true,
-        },
-        {
-          name: 'subtitle',
-          type: 'text',
-          required: true,
-        },
-        link({
-          appearances: false,
-        }),
-        {
-          name: 'image',
-          type: 'upload',
-          relationTo: 'media',
-          required: true,
+          admin: {
+            description: 'Select a service from the services collection',
+          },
         },
       ],
       maxRows: 6,

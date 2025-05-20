@@ -1,22 +1,28 @@
-import type { Metadata } from 'next'
-import { getServerSideURL } from './getURL'
+import { Metadata } from 'next'
+import deepMerge from './deepMerge'
 
-const defaultOpenGraph: Metadata['openGraph'] = {
-  type: 'website',
-  description: '',
-  images: [
-    {
-      url: `${getServerSideURL()}/og.jpg`,
-    },
-  ],
-  siteName: 'Unisyo Overseas',
-  title: 'Unisyo Overseas',
+interface OpenGraphProps {
+  title?: string
+  description?: string
+  image?: string
+  url?: string
 }
 
-export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {
-  return {
-    ...defaultOpenGraph,
-    ...og,
-    images: og?.images ? og.images : defaultOpenGraph.images,
-  }
+export const mergeOpenGraph = (og?: OpenGraphProps): Metadata['openGraph'] => {
+  return deepMerge(
+    {
+      type: 'website',
+      siteName: 'Unisys Overseas',
+      locale: 'en_US',
+      images: [
+        {
+          url: '/images/og-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'Unisys Overseas',
+        },
+      ],
+    },
+    og || {},
+  )
 }
