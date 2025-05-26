@@ -196,6 +196,14 @@ export interface Page {
               | ({
                   relationTo: 'posts';
                   value: string | Post;
+                } | null)
+              | ({
+                  relationTo: 'services-collection';
+                  value: string | ServicesCollection;
+                } | null)
+              | ({
+                  relationTo: 'service-country-details';
+                  value: string | ServiceCountryDetail;
                 } | null);
             url?: string | null;
             label: string;
@@ -405,6 +413,106 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-collection".
+ */
+export interface ServicesCollection {
+  id: string;
+  title: string;
+  /**
+   * A short, catchy phrase that describes the service
+   */
+  tagline: string;
+  description: string;
+  slug: string;
+  featuredImage: string | Media;
+  /**
+   * The .text to display on the call-to-action button
+   */
+  ctaLabel: string;
+  isActive?: boolean | null;
+  /**
+   * Order in which this service appears in the list
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-country-details".
+ */
+export interface ServiceCountryDetail {
+  id: string;
+  title: string;
+  description: string;
+  slug: string;
+  service: string | ServicesCollection;
+  country: string;
+  content: {
+    contentType: 'text-image' | 'full-width';
+    text: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    image?: (string | null) | Media;
+    backgroundColor?: ('primary' | 'gray') | null;
+    id?: string | null;
+  }[];
+  serviceType: 'student-visa';
+  popularUniversities?:
+    | {
+        name: string;
+        description?: string | null;
+        image?: (string | null) | Media;
+        website?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  popularCities?:
+    | {
+        name: string;
+        description?: string | null;
+        image?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  faqs?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
@@ -436,6 +544,14 @@ export interface CallToActionBlock {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'services-collection';
+                value: string | ServicesCollection;
+              } | null)
+            | ({
+                relationTo: 'service-country-details';
+                value: string | ServiceCountryDetail;
               } | null);
           url?: string | null;
           label: string;
@@ -486,6 +602,14 @@ export interface ContentBlock {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'services-collection';
+                value: string | ServicesCollection;
+              } | null)
+            | ({
+                relationTo: 'service-country-details';
+                value: string | ServiceCountryDetail;
               } | null);
           url?: string | null;
           label: string;
@@ -739,106 +863,6 @@ export interface Form {
           };
           [k: string]: unknown;
         } | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "services-collection".
- */
-export interface ServicesCollection {
-  id: string;
-  title: string;
-  /**
-   * A short, catchy phrase that describes the service
-   */
-  tagline: string;
-  description: string;
-  slug: string;
-  featuredImage: string | Media;
-  /**
-   * The text to display on the call-to-action button
-   */
-  ctaLabel: string;
-  isActive?: boolean | null;
-  /**
-   * Order in which this service appears in the list
-   */
-  order?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "service-country-details".
- */
-export interface ServiceCountryDetail {
-  id: string;
-  title: string;
-  description: string;
-  slug: string;
-  service: string | ServicesCollection;
-  country: string;
-  content: {
-    contentType: 'text-image' | 'full-width';
-    text: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    image?: (string | null) | Media;
-    backgroundColor?: ('primary' | 'gray') | null;
-    id?: string | null;
-  }[];
-  serviceType: 'student-visa';
-  popularUniversities?:
-    | {
-        name: string;
-        description?: string | null;
-        image?: (string | null) | Media;
-        website?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  popularCities?:
-    | {
-        name: string;
-        description?: string | null;
-        image?: (string | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  faqs?:
-    | {
-        question: string;
-        answer: {
-          root: {
-            type: string;
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
         id?: string | null;
       }[]
     | null;
@@ -1738,6 +1762,14 @@ export interface Header {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'services-collection';
+                value: string | ServicesCollection;
+              } | null)
+            | ({
+                relationTo: 'service-country-details';
+                value: string | ServiceCountryDetail;
               } | null);
           url?: string | null;
           label: string;
@@ -1767,6 +1799,14 @@ export interface HeroContent {
       | ({
           relationTo: 'posts';
           value: string | Post;
+        } | null)
+      | ({
+          relationTo: 'services-collection';
+          value: string | ServicesCollection;
+        } | null)
+      | ({
+          relationTo: 'service-country-details';
+          value: string | ServiceCountryDetail;
         } | null);
     url?: string | null;
     label: string;
@@ -1782,6 +1822,14 @@ export interface HeroContent {
       | ({
           relationTo: 'posts';
           value: string | Post;
+        } | null)
+      | ({
+          relationTo: 'services-collection';
+          value: string | ServicesCollection;
+        } | null)
+      | ({
+          relationTo: 'service-country-details';
+          value: string | ServiceCountryDetail;
         } | null);
     url?: string | null;
     label: string;
@@ -1816,6 +1864,14 @@ export interface HeroCarousel {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'services-collection';
+                value: string | ServicesCollection;
+              } | null)
+            | ({
+                relationTo: 'service-country-details';
+                value: string | ServiceCountryDetail;
               } | null);
           url?: string | null;
           label: string;
@@ -1940,6 +1996,14 @@ export interface Footer {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'services-collection';
+                value: string | ServicesCollection;
+              } | null)
+            | ({
+                relationTo: 'service-country-details';
+                value: string | ServiceCountryDetail;
               } | null);
           url?: string | null;
           label: string;

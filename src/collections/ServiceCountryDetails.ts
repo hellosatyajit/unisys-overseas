@@ -113,6 +113,7 @@ export const ServiceCountryDetails: CollectionConfig = {
         },
       ],
     },
+    
     {
       name: 'popularCities',
       type: 'array',

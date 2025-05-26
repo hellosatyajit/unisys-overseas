@@ -45,7 +45,7 @@ export const Services: CollectionConfig = {
       required: true,
       defaultValue: 'Learn More',
       admin: {
-        description: 'The text to display on the call-to-action button',
+        description: 'The .text to display on the call-to-action button',
       },
     },
     {
