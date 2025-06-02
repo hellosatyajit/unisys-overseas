@@ -13,13 +13,13 @@ import configPromise from '@payload-config'
 import ContentBlocks from '@/components/ServiceContentBlock'
 
 interface ServicePageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default async function ServicePage({ params }: ServicePageProps) {
-  const { slug } = params
+  const { slug } = await params
   const payload = await getPayload({ config: configPromise })
 
   const services = await payload.find({
@@ -132,7 +132,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
 }
 
 export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
-  const { slug } = params
+  const { slug } = await params
   const payload = await getPayload({ config: configPromise })
 
   const services = await payload.find({
