@@ -55,6 +55,7 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
+        // your light blue
         accent: {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',

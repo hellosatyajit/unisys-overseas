@@ -25,7 +25,10 @@ import { Countries } from './components/Countries/config'
 import { Testimonial } from './components/Testimonial/config'
 import { Faqs } from './components/FAQs/config'
 import { WhyUs } from './components/WhyUs/config'
+import { TeamMembersCollection } from './collections/team-members'
 
+import { PartnersCollection } from './collections/partners'
+import { AboutPageGlobal } from './collections/globals/about-page'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -71,7 +74,18 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Posts, Media, Categories, Users, ServicesCollection, ServiceCountryDetails],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    ServicesCollection,
+    ServiceCountryDetails,
+    TeamMembersCollection,
+
+    PartnersCollection,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [
     Header,
@@ -83,6 +97,7 @@ export default buildConfig({
     Faqs,
     WhyUs,
     Footer,
+    AboutPageGlobal,
   ],
   plugins: [
     ...plugins,
@@ -99,6 +114,7 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+
   jobs: {
     access: {
       run: ({ req }: { req: PayloadRequest }): boolean => {

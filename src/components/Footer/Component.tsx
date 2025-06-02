@@ -4,7 +4,7 @@ import React from 'react'
 
 import type { Footer, Service, ServicesCollection } from '@/payload-types'
 
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '../Link'
 import { Logo } from '@/components/Logo/Logo'
 
 export async function Footer() {

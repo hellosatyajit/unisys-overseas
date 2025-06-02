@@ -1,17 +1,19 @@
-import React from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Metadata } from 'next'
-
+import type { Metadata } from 'next'
+import { ChevronRight, ExternalLink, ChevronLeft } from 'lucide-react'
+import { Button } from '../../../../../components/ui/button'
+import { ArrowRightIcon } from 'lucide-react'
 import RichText from '@/components/RichText'
 import { Gutter } from '@/components/Gutter'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
+import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import { Media, ServicesCollection } from '@/payload-types'
-
+import type { Media, ServicesCollection } from '@/payload-types'
+import { FAQs } from '@/components/FAQs/Component'
+import ServiceContentBlock from '@/components/ServiceContentBlock'
 interface CountryServicePageProps {
   params: {
     slug: string
@@ -56,6 +58,10 @@ interface FAQ {
 interface CountryService {
   title: string
   description: string
+  image?: {
+    url: string
+    alt?: string
+  }
   country: string
   serviceType: string
   content?: ContentBlock[]
@@ -67,7 +73,6 @@ interface CountryService {
 export default async function CountryServicePage({ params }: CountryServicePageProps) {
   const { slug, countrySlug } = params
 
-  // Fetch main service
   const payload = await getPayload({ config: configPromise })
 
   const services = await payload.find({
@@ -85,7 +90,6 @@ export default async function CountryServicePage({ params }: CountryServicePageP
     return notFound()
   }
 
-  // Fetch country-specific service details
   const countryServices = await payload.find({
     collection: 'service-country-details',
     where: {
@@ -103,141 +107,299 @@ export default async function CountryServicePage({ params }: CountryServicePageP
 
   const isStudentVisa = countryService.serviceType === 'student-visa'
 
+  const truncateText = (text: string, maxLength = 120) => {
+    if (text.length <= maxLength) return text
+    return text.substring(0, maxLength).trim() + '...'
+  }
+
+  const getBackgroundColorClass = (color?: string) => {
+    const colorMap: { [key: string]: string } = {
+      blue: 'bg-blue-50 dark:bg-blue-950',
+      green: 'bg-green-50 dark:bg-green-950',
+      purple: 'bg-purple-50 dark:bg-purple-950',
+      orange: 'bg-orange-50 dark:bg-orange-950',
+      red: 'bg-red-50 dark:bg-red-950',
+      gray: 'bg-gray-50 dark:bg-gray-950',
+      yellow: 'bg-yellow-50 dark:bg-yellow-950',
+    }
+    return colorMap[color || 'gray'] || 'bg-gray-50 dark:bg-gray-950'
+  }
+  const content = countryService.content
   return (
-    <main className="country-service-page">
-      <Gutter>
-        <nav className="breadcrumb">
-          <Link href="/">Home</Link> /<Link href="/services">Services</Link> /
-          <Link href={`/services/${slug}`}>{service.title}</Link> /
-          <span>{countryService.country}</span>
-        </nav>
+    <main className="country-service-page ">
+      <div>
+        <Gutter>
+          <nav className="flex items-center space-x-2 py-4 text-sm ">
+            <Link
+              href="/"
+              className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+            >
+              Home
+            </Link>
+            <ChevronRight className="h-4 w-4" />
+            <Link
+              href="/services"
+              className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+            >
+              Services
+            </Link>
+            <ChevronRight className="h-4 w-4" />
+            <Link
+              href={`/services/${slug}`}
+              className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+            >
+              {service.title}
+            </Link>
+            <ChevronRight className="h-4 w-4" />
+            <span className="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+              {countryService.country}
+            </span>
+          </nav>
+        </Gutter>
+      </div>
+
+      <Gutter className="service-hero-section flex flex-col md:flex-row items-center md:items-start gap-16 py-12">
+        <div className="flex-1 w-full md:pt-6">
+          <h1 className="font-bold text-4xl md:text-5xl tracking-tight text-secondary">
+            {countryService.title}
+          </h1>
+          <p className="text-lg text-justify text-slate-600 mt-6">{countryService.description}</p>
+        </div>
+
+        {countryService.featuredImage && (
+          <div className="flex-1 w-full">
+            <Image
+              src={(countryService.featuredImage as Media).url || ''}
+              alt={countryService.title}
+              width={1200}
+              height={600}
+              priority
+              className="w-full h-[400px] rounded-3xl object-cover shadow-md"
+            />
+          </div>
+        )}
       </Gutter>
 
-      <Gutter className="country-service-header">
-        <h1>{countryService.title}</h1>
-        <p className="country-service-description">{countryService.description}</p>
-      </Gutter>
-
-      {/* Content Blocks */}
+      {/* Content Blocks 
       {countryService.content &&
         countryService.content.map((block, i) => {
           if (block.contentType === 'text-image') {
             return (
-              <Gutter
-                key={i}
-                className={`content-block text-image-block ${i % 2 === 0 ? 'even' : 'odd'}`}
-              >
-                <div className="text-content">
-                  <RichText data={block.text} />
-                </div>
-                {block.image && (
-                  <div className="image-wrapper">
-                    <Image
-                      src={(block.image as Media).url || ''}
-                      alt={countryService.title}
-                      width={600}
-                      height={400}
-                      className="content-image"
-                    />
+              <section key={i} className="py-12 lg:py-16">
+                <Gutter>
+                  <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 ">
+                    
+                    {block.image && (
+                      <div className="order-2 lg:order-1">
+                        <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
+                          <Image
+                            src={(block.image as Media).url || ''}
+                            alt={countryService.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                   
+                    <div className="order-1 lg:order-2 ">
+                      <div className="text-justify ">
+                        <RichText data={block.text} />
+                      </div>
+                    </div>
                   </div>
-                )}
-              </Gutter>
+                </Gutter>
+              </section>
             )
           }
 
           if (block.contentType === 'full-width') {
             return (
-              <div key={i} className={`full-width-block bg-${block.backgroundColor}`}>
+              <section key={i} className="pt-10">
                 <Gutter>
-                  <div className="text-content-full">
-                    <RichText data={block.text} />
+                  <div>
+                    <RichText
+                      className={`max-w-full rounded-xl sm:8 md:p-12 text-center  bg-${block.backgroundColor || 'gray-100'}`}
+                      data={block.text}
+                    />
                   </div>
                 </Gutter>
-              </div>
+              </section>
             )
           }
-        })}
 
-      {/* Student Visa Specific Content */}
+          return null
+        })}*/}
+
+      <ServiceContentBlock content={content} />
+      {/* Universities Section */}
       {isStudentVisa &&
         countryService.popularUniversities &&
         countryService.popularUniversities.length > 0 && (
-          <Gutter className="universities-section">
-            <h2>Popular Universities</h2>
-            <div className="universities-grid">
-              {countryService.popularUniversities.map((uni, i) => (
-                <div key={i} className="university-card">
+          <section
+            className="py-16 bg-white container mx-auto px-4 space-y-8"
+            id="popular-universities"
+          >
+            <div className="space-y-2 col-span-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary lg:mb-0 mb-4">
+                Popular Universities
+              </h2>
+              <p className="text-gray-600 lg:max-w-lg">
+                Discover top-ranked institutions that offer excellent education and opportunities.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-10">
+              {countryService.popularUniversities.slice(0, 4).map((uni, i) => (
+                <div key={i} className="flex flex-col sm:flex-row gap-2 sm:gap-4 group">
                   {uni.image && (
-                    <div className="university-image">
-                      <Image
-                        src={(uni.image as Media).url || ''}
-                        alt={uni.name}
-                        width={300}
-                        height={200}
-                        className="uni-image"
-                      />
-                    </div>
+                    <img
+                      src={(uni.image as Media).url || '/placeholder.png'}
+                      alt={uni.name}
+                      className="h-48 sm:h-64 aspect-square rounded-3xl object-cover"
+                    />
                   )}
-                  <h3>{uni.name}</h3>
-                  {uni.description && <p>{uni.description}</p>}
-                  {uni.website && (
-                    <a
-                      href={uni.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="university-link"
-                    >
-                      Visit Website
-                    </a>
-                  )}
+                  <div className="space-y-2 sm:space-y-4">
+                    <h3 className="text-3xl lg:leading-tight font-semibold">{uni.name}</h3>
+                    {uni.description && (
+                      <p className="text-gray-600 text-sm sm:text-base">
+                        {truncateText(uni.description, 200)}
+                      </p>
+                    )}
+                    {uni.website && (
+                      <Button variant="outline" asChild>
+                        <a
+                          href={uni.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="gap-2 text-lg"
+                        >
+                          Visit Website <ArrowRightIcon size={18} />
+                        </a>
+                      </Button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
-          </Gutter>
+
+            {countryService.popularUniversities.length > 4 && (
+              <Button size="lg" className="rounded-full" variant="outline" asChild>
+                <Link href="/universities" className="gap-2 text-lg">
+                  View More <ArrowRightIcon />
+                </Link>
+              </Button>
+            )}
+          </section>
         )}
 
-      {/* Popular Cities */}
+      {/* Cities Slider Section */}
       {isStudentVisa && countryService.popularCities && countryService.popularCities.length > 0 && (
-        <Gutter className="cities-section">
-          <h2>Popular Student Cities</h2>
-          <div className="cities-grid">
-            {countryService.popularCities.map((city, i) => (
-              <div key={i} className="city-card">
-                {city.image && (
-                  <div className="city-image">
-                    <Image
-                      src={(city.image as Media).url || ''}
-                      alt={city.name}
-                      width={300}
-                      height={200}
-                      className="city-img"
-                    />
-                  </div>
-                )}
-                <h3>{city.name}</h3>
-                {city.description && <p>{city.description}</p>}
-              </div>
-            ))}
+        <section
+          className="py-16 bg-white container mx-auto px-4 space-y-8"
+          id="popular-student-cities"
+        >
+          <div className="space-y-2 col-span-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary lg:mb-0 mb-4">
+              Popular Student Cities
+            </h2>
+            <p className="text-gray-600 lg:max-w-lg">
+              Explore vibrant cities that offer the perfect blend of education and lifestyle.
+            </p>
           </div>
-        </Gutter>
-      )}
 
-      {/* FAQs */}
-      {countryService.faqs && countryService.faqs.length > 0 && (
-        <Gutter className="faqs-section">
-          <h2>Frequently Asked Questions</h2>
-          <div className="faqs-list">
-            {countryService.faqs.map((faq: FAQ, i: number) => (
-              <div key={i} className="faq-item">
-                <h3 className="question">{faq.question}</h3>
-                <div className="answer">
-                  <RichText data={faq.answer} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-10">
+            {countryService.popularCities.slice(0, 4).map((city, i) => (
+              <div key={i} className="flex flex-col sm:flex-row gap-2 sm:gap-4 group">
+                {city.image && (
+                  <img
+                    src={(city.image as Media).url || '/placeholder.png'}
+                    alt={city.name}
+                    className="h-48 sm:h-64 aspect-square rounded-3xl object-cover"
+                  />
+                )}
+                <div className="space-y-2 sm:space-y-4">
+                  <h3 className="text-3xl lg:leading-tight font-semibold">{city.name}</h3>
+                  {city.description && (
+                    <p className="text-gray-600 text-sm sm:text-base">
+                      {truncateText(city.description, 250)}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
           </div>
-        </Gutter>
+
+          {countryService.popularCities.length > 4 && (
+            <Button size="lg" className="rounded-full" variant="outline" asChild>
+              <Link href="/cities" className="gap-2 text-lg">
+                View More <ArrowRightIcon />
+              </Link>
+            </Button>
+          )}
+        </section>
       )}
+
+      {/* FAQs Section */}
+      {countryService.faqs && countryService.faqs.length > 0 && (
+        <FAQs
+          title="Frequently Asked Questions"
+          subtitle="Find answers to common questions about our services"
+          faqs={countryService.faqs}
+        />
+      )}
+
+      {/* Add some basic slider functionality */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            document.addEventListener('DOMContentLoaded', function() {
+              const slider = document.getElementById('cities-slider');
+              if (slider) {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+
+                slider.addEventListener('mousedown', (e) => {
+                  isDown = true;
+                  startX = e.pageX - slider.offsetLeft;
+                  scrollLeft = slider.scrollLeft;
+                });
+
+                slider.addEventListener('mouseleave', () => {
+                  isDown = false;
+                });
+
+                slider.addEventListener('mouseup', () => {
+                  isDown = false;
+                });
+
+                slider.addEventListener('mousemove', (e) => {
+                  if (!isDown) return;
+                  e.preventDefault();
+                  const x = e.pageX - slider.offsetLeft;
+                  const walk = (x - startX) * 2;
+                  slider.scrollLeft = scrollLeft - walk;
+                });
+
+                // Touch events for mobile
+                slider.addEventListener('touchstart', (e) => {
+                  startX = e.touches[0].pageX - slider.offsetLeft;
+                  scrollLeft = slider.scrollLeft;
+                });
+
+                slider.addEventListener('touchmove', (e) => {
+                  const x = e.touches[0].pageX - slider.offsetLeft;
+                  const walk = (x - startX) * 2;
+                  slider.scrollLeft = scrollLeft - walk;
+                });
+              }
+            });
+          `,
+        }}
+      />
     </main>
   )
 }

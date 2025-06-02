@@ -17,37 +17,34 @@ export default async function Page() {
   const posts = await payload.find({
     collection: 'posts',
     depth: 1,
-    limit: 12,
+    limit: 1000,
     overrideAccess: false,
     select: {
       title: true,
       slug: true,
+      heroImage: true,
       categories: true,
       meta: true,
     },
   })
+  console.log(posts.docs)
 
   return (
-    <div className="pt-24 pb-24">
-      <PageClient />
-      <div className="container mb-16">
-        <div className="prose max-w-none">
-          <h1>Posts</h1>
-        </div>
-      </div>
-
-      <div className="container mb-8">
-        <PageRange
-          collection="posts"
-          currentPage={posts.page}
-          limit={12}
-          totalDocs={posts.totalDocs}
-        />
+    <div className="py-20">
+      <div className="mx-auto px-4 max-w-4xl sm:text-center pb-10">
+        <h1 className="mb-6p  text-4xl font-bold tracking-tight text-gray-900 md:text-6xl lg:text-7xl">
+          Your Immigration <span className="text-red-600">Guide</span>
+        </h1>
+        <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-gray-600 md:text-xl">
+          Stay informed with expert articles, immigration news, and practical tips. Our blog is your
+          go-to resource for the latest updates, visa guides, and real-world advice to support your
+          journey abroad.
+        </p>
       </div>
 
       <CollectionArchive posts={posts.docs} />
 
-      <div className="container">
+      <div className="container ">
         {posts.totalPages > 1 && posts.page && (
           <Pagination page={posts.page} totalPages={posts.totalPages} />
         )}

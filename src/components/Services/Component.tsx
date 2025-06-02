@@ -7,7 +7,8 @@ import Link from 'next/link'
 import { ArrowRightIcon } from 'lucide-react'
 
 export async function Services() {
-  const services = (await getCachedGlobal('services', 2)()) as Service
+  const services = (await getCachedGlobal('services', 3)()) as Service
+  console.log(services)
 
   return (
     <section className="py-16 bg-white container mx-auto px-4 space-y-8" id="services">
@@ -26,9 +27,13 @@ export async function Services() {
           >
             <img
               src={
-                ((service as ServicesCollection).featuredImage as Media).url ?? '/placeholder.png'
+                ((service as ServicesCollection).featuredImage as Media)?.url || '/placeholder.png'
               }
-              alt={((service as ServicesCollection).featuredImage as Media).alt ?? ''}
+              alt={
+                ((service as ServicesCollection).featuredImage as Media)?.alt ||
+                (service as ServicesCollection).title ||
+                'Service Image'
+              }
               className="h-48 sm:h-64 aspect-square rounded-3xl object-cover"
             />
             <div className="space-y-2 sm:space-y-4">

@@ -74,6 +74,8 @@ export interface Config {
     users: User;
     'services-collection': ServicesCollection;
     'service-country-details': ServiceCountryDetail;
+    'team-members': TeamMember;
+    partners: Partner;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -92,6 +94,8 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     'services-collection': ServicesCollectionSelect<false> | ServicesCollectionSelect<true>;
     'service-country-details': ServiceCountryDetailsSelect<false> | ServiceCountryDetailsSelect<true>;
+    'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
+    partners: PartnersSelect<false> | PartnersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -114,6 +118,7 @@ export interface Config {
     faqs: Faq;
     'why-us': WhyUs;
     footer: Footer;
+    'about-page': AboutPage;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
@@ -125,6 +130,7 @@ export interface Config {
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     'why-us': WhyUsSelect<false> | WhyUsSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
   };
   locale: null;
   user: User & {
@@ -434,6 +440,34 @@ export interface ServicesCollection {
    * Order in which this service appears in the list
    */
   order?: number | null;
+  content: {
+    contentType: 'text-image' | 'full-width';
+    text: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    image?: (string | null) | Media;
+    backgroundColor?: ('blue-50' | 'gray-50') | null;
+    id?: string | null;
+  }[];
+  faqs?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -445,6 +479,7 @@ export interface ServiceCountryDetail {
   id: string;
   title: string;
   description: string;
+  featuredImage: string | Media;
   slug: string;
   service: string | ServicesCollection;
   country: string;
@@ -466,7 +501,7 @@ export interface ServiceCountryDetail {
       [k: string]: unknown;
     };
     image?: (string | null) | Media;
-    backgroundColor?: ('primary' | 'gray') | null;
+    backgroundColor?: ('blue-50' | 'gray-50') | null;
     id?: string | null;
   }[];
   serviceType: 'student-visa';
@@ -490,21 +525,7 @@ export interface ServiceCountryDetail {
   faqs?:
     | {
         question: string;
-        answer: {
-          root: {
-            type: string;
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
+        answer: string;
         id?: string | null;
       }[]
     | null;
@@ -871,6 +892,45 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members".
+ */
+export interface TeamMember {
+  id: string;
+  name: string;
+  position: string;
+  bio: string;
+  image: string | Media;
+  /**
+   * Controls the order of team members (lower numbers appear first)
+   */
+  order?: number | null;
+  socialLinks?:
+    | {
+        platform: 'linkedin' | 'twitter' | 'email';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners".
+ */
+export interface Partner {
+  id: string;
+  name: string;
+  logo: string | Media;
+  /**
+   * Partner website URL
+   */
+  website?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1068,6 +1128,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'service-country-details';
         value: string | ServiceCountryDetail;
+      } | null)
+    | ({
+        relationTo: 'team-members';
+        value: string | TeamMember;
+      } | null)
+    | ({
+        relationTo: 'partners';
+        value: string | Partner;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1439,6 +1507,22 @@ export interface ServicesCollectionSelect<T extends boolean = true> {
   ctaLabel?: T;
   isActive?: T;
   order?: T;
+  content?:
+    | T
+    | {
+        contentType?: T;
+        text?: T;
+        image?: T;
+        backgroundColor?: T;
+        id?: T;
+      };
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1449,6 +1533,7 @@ export interface ServicesCollectionSelect<T extends boolean = true> {
 export interface ServiceCountryDetailsSelect<T extends boolean = true> {
   title?: T;
   description?: T;
+  featuredImage?: T;
   slug?: T;
   service?: T;
   country?: T;
@@ -1486,6 +1571,37 @@ export interface ServiceCountryDetailsSelect<T extends boolean = true> {
         answer?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members_select".
+ */
+export interface TeamMembersSelect<T extends boolean = true> {
+  name?: T;
+  position?: T;
+  bio?: T;
+  image?: T;
+  order?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners_select".
+ */
+export interface PartnersSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  website?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2028,6 +2144,55 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page".
+ */
+export interface AboutPage {
+  id: string;
+  heroTitle: string;
+  heroDescription: string;
+  heroImage: string | Media;
+  missionTitle: string;
+  missionDescription: string;
+  missionImage: string | Media;
+  stats?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  values?:
+    | {
+        title: string;
+        description: string;
+        /**
+         * Enter an emoji or icon character
+         */
+        icon: string;
+        id?: string | null;
+      }[]
+    | null;
+  teamTitle: string;
+  teamDescription: string;
+  timelineTitle: string;
+  timelineDescription: string;
+  milestones?:
+    | {
+        year: string;
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  partnersTitle: string;
+  partnersDescription: string;
+  contactTitle: string;
+  contactDescription: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2236,6 +2401,52 @@ export interface FooterSelect<T extends boolean = true> {
         instagram?: T;
         linkedin?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  heroTitle?: T;
+  heroDescription?: T;
+  heroImage?: T;
+  missionTitle?: T;
+  missionDescription?: T;
+  missionImage?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  values?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  teamTitle?: T;
+  teamDescription?: T;
+  timelineTitle?: T;
+  timelineDescription?: T;
+  milestones?:
+    | T
+    | {
+        year?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  partnersTitle?: T;
+  partnersDescription?: T;
+  contactTitle?: T;
+  contactDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

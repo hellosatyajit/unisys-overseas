@@ -1,10 +1,18 @@
-import { formatDateTime } from 'src/utilities/formatDateTime'
 import React from 'react'
 
 import type { Post } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
+
+function formatDateTime(dateString: string) {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
 
 export const PostHero: React.FC<{
   post: Post
@@ -15,10 +23,57 @@ export const PostHero: React.FC<{
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
   return (
-    <div className="relative -mt-[10.4rem] flex items-end">
-      <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] text-white pb-8">
-        <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
-          <div className="uppercase text-sm mb-6">
+    <div className="w-full">
+      {/* Hero Text Section */}
+      <div className="container  mx-auto px-4 pb-8 md:pb-12 lg:pb-16">
+        <div className="max-w-4xl mx-auto text-left">
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-6 md:mb-6">
+            {/* Date */}
+            {publishedAt && (
+              <time
+                dateTime={publishedAt}
+                className="text-sm md:text-base font-medium text-gray-700"
+              >
+                {formatDateTime(publishedAt)}
+              </time>
+            )}
+
+            {/* Author */}
+            {hasAuthors && (
+              <span className="text-sm md:text-base font-medium text-gray-700">
+                {formatAuthors(populatedAuthors)}
+              </span>
+            )}
+
+            {/* Categories
+            {categories && categories.length > 0 && (
+              <div className="flex items-center gap-2">
+                {categories.map((category, index) => {
+                  if (typeof category === 'object' && category !== null) {
+                    const { title: categoryTitle } = category
+                    const titleToUse = categoryTitle || 'Untitled category'
+
+                    return (
+                      <span
+                        key={index}
+                        className="px-3 py-1 text-xs md:text-sm font-medium text-gray-600 bg-gray-100 rounded-full"
+                      >
+                        {titleToUse}
+                      </span>
+                    )
+                  }
+                  return null
+                })}
+              </div>
+            )} */}
+          </div>
+          {/* Title */}
+          <h1 className="mb-8 text-4xl font-bold  text-center text-gray-900 md:text-6xl lg:text-7xl leading-tight text-foreground">
+            {title}
+          </h1>
+          {/* Author and Date */}
+          {/* Categories */}
+          <div className="uppercase mx-auto text-center text-sm mb-4 text-muted-foreground font-medium tracking-wider">
             {categories?.map((category, index) => {
               if (typeof category === 'object' && category !== null) {
                 const { title: categoryTitle } = category
@@ -37,37 +92,22 @@ export const PostHero: React.FC<{
               return null
             })}
           </div>
-
-          <div className="">
-            <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-4 md:gap-16">
-            {hasAuthors && (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm">Author</p>
-
-                  <p>{formatAuthors(populatedAuthors)}</p>
-                </div>
-              </div>
-            )}
-            {publishedAt && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Date Published</p>
-
-                <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
-              </div>
-            )}
-          </div>
         </div>
       </div>
-      <div className="min-h-[80vh] select-none">
-        {heroImage && typeof heroImage !== 'string' && (
-          <Media fill priority imgClassName="-z-10 object-cover" resource={heroImage} />
-        )}
-        <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent" />
-      </div>
+
+      {/* Hero Image Section */}
+      {heroImage && typeof heroImage !== 'string' && (
+        <div className="px-4 max-w-[48rem] mx-auto">
+          <div className="relative w-full h-[50vh] md:h-[60vh] lg:h-[70vh] xl:h-[70vh] overflow-hidden rounded-lg">
+            <Media
+              fill
+              priority
+              imgClassName="object-cover rounded-3xl h-[50vh] md:h-[60vh] lg:h-[70vh] xl:h-[70vh]"
+              resource={heroImage}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

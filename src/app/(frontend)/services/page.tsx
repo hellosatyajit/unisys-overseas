@@ -11,11 +11,12 @@ import { Button } from '@/components/ui/button'
 import { ArrowRightIcon, Award, CheckCircle, Globe, Users } from 'lucide-react'
 import { NotSureSection } from '@/components/NotSureSection'
 import { FAQs } from '@/components/FAQs/Component'
+import type { Faq } from '@/payload-types'
 import { WhyUs } from '@/components/WhyUs/Component'
-
+import { getCachedGlobal } from '@/utilities/getGlobals'
 export default async function Services() {
   const payload = await getPayload({ config: configPromise })
-
+  const faqs = (await getCachedGlobal('faqs', 1)()) as Faq
   const services = await payload.find({
     collection: 'services-collection',
   })
@@ -84,8 +85,10 @@ export default async function Services() {
               />
               <div className="space-y-2 sm:space-y-4">
                 <h3 className="text-3xl lg:leading-tight font-semibold">{service.title}</h3>
-                <p className="text-red-600 font-medium">{service.tagline}</p>
-                <p className="text-gray-600 text-sm sm:text-base">{service.description}</p>
+                {/* <p className="text-red-600 font-medium">{service.tagline}</p> */}
+                <p className="text-gray-600 text-sm sm:text-base line-clamp-5">
+                  {service.description}
+                </p>
                 <Button variant="outline" asChild>
                   <Link href={`/services/${service.slug}`} className="gap-2 text-lg">
                     {service.ctaLabel} <ArrowRightIcon size={18} />
@@ -99,7 +102,13 @@ export default async function Services() {
 
       <NotSureSection />
       <WhyUs />
-      <FAQs />
+      {faqs?.faqs && faqs.faqs.length > 0 && (
+        <FAQs
+          title="Frequently Asked Questions"
+          subtitle="Find answers to common questions about our services"
+          faqs={faqs.faqs}
+        />
+      )}
     </>
   )
 }

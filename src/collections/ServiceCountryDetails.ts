@@ -20,6 +20,12 @@ export const ServiceCountryDetails: CollectionConfig = {
       required: true,
     },
     {
+      name: 'featuredImage',
+      type: 'upload',
+      relationTo: 'media',
+      required: true,
+    },
+    {
       name: 'slug',
       type: 'text',
       required: true,
@@ -36,6 +42,7 @@ export const ServiceCountryDetails: CollectionConfig = {
       type: 'text',
       required: true,
     },
+
     {
       name: 'content',
       type: 'array',
@@ -68,8 +75,8 @@ export const ServiceCountryDetails: CollectionConfig = {
           type: 'select',
           defaultValue: 'primary',
           options: [
-            { label: 'Primary', value: 'primary' },
-            { label: 'Gray', value: 'gray' },
+            { label: 'Primary', value: 'blue-50' },
+            { label: 'Gray', value: 'gray-50' },
           ],
           admin: {
             condition: (data, siblingData) => siblingData?.contentType === 'full-width',
@@ -113,7 +120,7 @@ export const ServiceCountryDetails: CollectionConfig = {
         },
       ],
     },
-    
+
     {
       name: 'popularCities',
       type: 'array',
@@ -148,7 +155,7 @@ export const ServiceCountryDetails: CollectionConfig = {
         },
         {
           name: 'answer',
-          type: 'richText',
+          type: 'text',
           required: true,
         },
       ],

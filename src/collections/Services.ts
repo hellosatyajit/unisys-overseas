@@ -62,5 +62,62 @@ export const Services: CollectionConfig = {
         description: 'Order in which this service appears in the list',
       },
     },
+    {
+      name: 'content',
+      type: 'array',
+      required: true,
+      fields: [
+        {
+          name: 'contentType',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Text and Image', value: 'text-image' },
+            { label: 'Full Width Text', value: 'full-width' },
+          ],
+        },
+        {
+          name: 'text',
+          type: 'richText',
+          required: true,
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            condition: (data, siblingData) => siblingData?.contentType === 'text-image',
+          },
+        },
+        {
+          name: 'backgroundColor',
+          type: 'select',
+          defaultValue: 'primary',
+          options: [
+            { label: 'Primary', value: 'blue-50' },
+            { label: 'Gray', value: 'gray-50' },
+          ],
+          admin: {
+            condition: (data, siblingData) => siblingData?.contentType === 'full-width',
+          },
+        },
+      ],
+    },
+    {
+      name: 'faqs',
+      type: 'array',
+      fields: [
+        {
+          name: 'question',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'answer',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
   ],
 }
