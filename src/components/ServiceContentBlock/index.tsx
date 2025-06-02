@@ -3,18 +3,13 @@ import RichText from '@/components/RichText'
 import { Gutter } from '@/components/Gutter'
 
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical' // adjust if needed
+import { Media } from '@/payload-types'
 
 interface ContentBlock {
   contentType: string
   text: DefaultTypedEditorState
-  image?:
-    | {
-        url: string
-        alt?: string
-      }
-    | string
-    | null
-  backgroundColor?: string
+  image?: string | Media | null | undefined
+  backgroundColor?: string | null | undefined
 }
 
 interface Props {
@@ -35,7 +30,7 @@ export default function ContentBlocks({ content }: Props) {
                     <div className="order-2 lg:order-1">
                       <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
                         <Image
-                          src={block.image.url}
+                          src={(block.image as Media).url ?? ''}
                           alt={block.image.alt || ''}
                           fill
                           className="object-cover"

@@ -15,10 +15,10 @@ import type { Media, ServicesCollection } from '@/payload-types'
 import { FAQs } from '@/components/FAQs/Component'
 import ServiceContentBlock from '@/components/ServiceContentBlock'
 interface CountryServicePageProps {
-  params: {
+  params: Promise<{
     slug: string
     countrySlug: string
-  }
+  }>
 }
 
 interface ContentBlock {
@@ -71,7 +71,7 @@ interface CountryService {
 }
 
 export default async function CountryServicePage({ params }: CountryServicePageProps) {
-  const { slug, countrySlug } = params
+  const { slug, countrySlug } = await params
 
   const payload = await getPayload({ config: configPromise })
 
@@ -180,61 +180,8 @@ export default async function CountryServicePage({ params }: CountryServicePageP
         )}
       </Gutter>
 
-      {/* Content Blocks 
-      {countryService.content &&
-        countryService.content.map((block, i) => {
-          if (block.contentType === 'text-image') {
-            return (
-              <section key={i} className="py-12 lg:py-16">
-                <Gutter>
-                  <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 ">
-                    
-                    {block.image && (
-                      <div className="order-2 lg:order-1">
-                        <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
-                          <Image
-                            src={(block.image as Media).url || ''}
-                            alt={countryService.title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 1024px) 100vw, 50vw"
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                   
-                    <div className="order-1 lg:order-2 ">
-                      <div className="text-justify ">
-                        <RichText data={block.text} />
-                      </div>
-                    </div>
-                  </div>
-                </Gutter>
-              </section>
-            )
-          }
-
-          if (block.contentType === 'full-width') {
-            return (
-              <section key={i} className="pt-10">
-                <Gutter>
-                  <div>
-                    <RichText
-                      className={`max-w-full rounded-xl sm:8 md:p-12 text-center  bg-${block.backgroundColor || 'gray-100'}`}
-                      data={block.text}
-                    />
-                  </div>
-                </Gutter>
-              </section>
-            )
-          }
-
-          return null
-        })}*/}
-
-      <ServiceContentBlock content={content} />
-      {/* Universities Section */}
+      <ServiceContentBlock content={service.content} />
+      
       {isStudentVisa &&
         countryService.popularUniversities &&
         countryService.popularUniversities.length > 0 && (
@@ -405,7 +352,7 @@ export default async function CountryServicePage({ params }: CountryServicePageP
 }
 
 export async function generateMetadata({ params }: CountryServicePageProps): Promise<Metadata> {
-  const { slug, countrySlug } = params
+  const { slug, countrySlug } = await params
 
   const payload = await getPayload({ config: configPromise })
 
