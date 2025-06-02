@@ -14,7 +14,7 @@ import { AboutPartners } from '@/components/about/about-partners'
 import { AboutContact } from '@/components/about/about-contact'
 import configPromise from '@payload-config'
 
-export const COLLECTIONS = {
+const COLLECTIONS = {
   TEAM_MEMBERS: 'team-members' as CollectionSlug,
   TESTIMONIALS: 'testimonials' as CollectionSlug,
   PARTNERS: 'partners' as CollectionSlug,
