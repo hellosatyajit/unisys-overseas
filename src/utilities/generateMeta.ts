@@ -32,13 +32,7 @@ export const generateMeta = async (args: {
     description: doc?.meta?.description,
     openGraph: mergeOpenGraph({
       description: doc?.meta?.description || '',
-      images: ogImage
-        ? [
-            {
-              url: ogImage,
-            },
-          ]
-        : undefined,
+      image: ogImage,
       title,
       url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
     }),
