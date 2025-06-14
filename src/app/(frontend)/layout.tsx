@@ -10,6 +10,7 @@ import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
+import { AnalyticsProvider } from '@/providers/AnalyticsProvider'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -30,18 +31,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
+          <AnalyticsProvider>
+            <AdminBar
+              adminBarProps={{
+                preview: isEnabled,
+              }}
+            />
 
-          <Header />
-          {children}
-          <Footer />
-          <div className="fixed bottom-0 inset-x-0 bg-background z-50 sm:hidden">
-            <InquiryForm fullWidth={true} />
-          </div>
+            <Header />
+            {children}
+            <Footer />
+            <div className="fixed bottom-0 inset-x-0 bg-background z-50 sm:hidden">
+              <InquiryForm fullWidth={true} />
+            </div>
+          </AnalyticsProvider>
         </Providers>
       </body>
     </html>
