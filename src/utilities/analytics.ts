@@ -3,88 +3,104 @@ import mixpanel from 'mixpanel-browser'
 // Initialize Mixpanel
 mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN || '', {
   debug: process.env.NODE_ENV === 'development',
-  track_pageview: true,
+  track_pageview: false, // we handle pageview manually
   persistence: 'localStorage',
 })
 
-// Analytics event names
+// 🔹 Analytics event names
 export const AnalyticsEvents = {
-  PAGE_VIEW: 'Page View',
-  BUTTON_CLICK: 'Button Click',
-  FORM_SUBMIT: 'Form Submit',
-  LINK_CLICK: 'Link Click',
+  PAGE_VIEW: 'Page Viewed',
+  BUTTON_CLICK: 'CTA Clicked',
+  FORM_SUBMIT: 'Form Submitted',
+  LINK_CLICK: 'Link Clicked',
   SEARCH: 'Search',
   SIGN_UP: 'Sign Up',
   LOGIN: 'Login',
   LOGOUT: 'Logout',
 } as const
 
-// Analytics helper functions
+// 🔹 Optional: Strongly typed union of event names
+export type MixpanelEvent = typeof AnalyticsEvents[keyof typeof AnalyticsEvents]
+
+// 🔹 Optional: Common property shape (shared across all events)
+export interface MixpanelProperties {
+  page_url?: string
+  referrer?: string
+  device_type?: 'Desktop' | 'Mobile' | 'Tablet'
+  button_text?: string
+  section?: string
+  form_name?: string
+  click_target?: string
+  timestamp?: string
+  [key: string]: any
+}
+
+// 🔹 Analytics helper functions
 export const analytics = {
-  // Track page views
-  trackPageView: (pageName: string, properties?: Record<string, any>) => {
+  // Page view
+  trackPageView: (pageName: string, properties?: MixpanelProperties) => {
     mixpanel.track(AnalyticsEvents.PAGE_VIEW, {
       page: pageName,
       ...properties,
     })
   },
 
-  // Track button clicks
-  trackButtonClick: (buttonName: string, properties?: Record<string, any>) => {
+  // CTA/Button Click
+  trackButtonClick: (buttonName: string, properties?: MixpanelProperties) => {
     mixpanel.track(AnalyticsEvents.BUTTON_CLICK, {
       button: buttonName,
       ...properties,
     })
   },
 
-  // Track form submissions
-  trackFormSubmit: (formName: string, properties?: Record<string, any>) => {
+  // Form Submit
+  trackFormSubmit: (formName: string, properties?: MixpanelProperties) => {
     mixpanel.track(AnalyticsEvents.FORM_SUBMIT, {
       form: formName,
       ...properties,
     })
   },
 
-  // Track link clicks
-  trackLinkClick: (linkName: string, properties?: Record<string, any>) => {
+  // Link Click (Phone, External links, etc.)
+  trackLinkClick: (linkName: string, properties?: MixpanelProperties) => {
     mixpanel.track(AnalyticsEvents.LINK_CLICK, {
       link: linkName,
       ...properties,
     })
   },
 
-  // Track search events
-  trackSearch: (searchTerm: string, properties?: Record<string, any>) => {
+  // Search event
+  trackSearch: (searchTerm: string, properties?: MixpanelProperties) => {
     mixpanel.track(AnalyticsEvents.SEARCH, {
       search_term: searchTerm,
       ...properties,
     })
   },
 
-  // Track user sign up
-  trackSignUp: (properties?: Record<string, any>) => {
+  // Sign up
+  trackSignUp: (properties?: MixpanelProperties) => {
     mixpanel.track(AnalyticsEvents.SIGN_UP, properties)
   },
 
-  // Track user login
-  trackLogin: (properties?: Record<string, any>) => {
+  // Login
+  trackLogin: (properties?: MixpanelProperties) => {
     mixpanel.track(AnalyticsEvents.LOGIN, properties)
   },
 
-  // Track user logout
-  trackLogout: (properties?: Record<string, any>) => {
+  // Logout
+  trackLogout: (properties?: MixpanelProperties) => {
     mixpanel.track(AnalyticsEvents.LOGOUT, properties)
   },
 
-  // Identify user
-  identify: (userId: string, userProperties?: Record<string, any>) => {
+  // Identify logged-in user
+  identify: (userId: string, userProperties?: MixpanelProperties) => {
     mixpanel.identify(userId)
     if (userProperties) {
       mixpanel.people.set(userProperties)
     }
   },
 
-  // Reset user
+  // Reset current user
   reset: () => {
     mixpanel.reset()
   },

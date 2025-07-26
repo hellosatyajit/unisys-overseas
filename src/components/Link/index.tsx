@@ -1,9 +1,12 @@
+'use client'
+
 import { Button, type ButtonProps } from '@/components/ui/button'
 import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
 
 import type { Page, Post, ServiceCountryDetail, ServicesCollection } from '@/payload-types'
+import { useAnalytics } from '@/hooks/useAnalytics'
 
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
@@ -33,11 +36,11 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     url,
   } = props
 
+  const { trackLinkClick } = useAnalytics()
+
   const href =
     type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
-      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
-          reference.value.slug
-        }`
+      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${reference.value.slug}`
       : url
 
   if (!href) return null
@@ -45,21 +48,30 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const size = appearance === 'link' ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
-  /* Ensure we don't break any styles set by richText */
+  const handleClick = () => {
+    trackLinkClick(label || 'CMS Link', {
+      click_target: href,
+      section: 'CMSLink Component',
+      timestamp: new Date().toISOString(),
+    })
+  }
+
+  // Inline link
   if (appearance === 'inline') {
     return (
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && label}
-        {children && children}
+      <Link className={cn(className)} href={href} {...newTabProps} onClick={handleClick}>
+        {label}
+        {children}
       </Link>
     )
   }
 
+  // Button-style link
   return (
     <Button asChild className={className} size={size} variant={appearance}>
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && label}
-        {children && children}
+      <Link className={cn(className)} href={href} {...newTabProps} onClick={handleClick}>
+        {label}
+        {children}
       </Link>
     </Button>
   )

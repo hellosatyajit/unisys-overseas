@@ -22,9 +22,11 @@ export type FormBlockType = {
 export const FormBlock: React.FC<
   {
     id?: string
+	onSuccess?: () => void
   } & FormBlockType
 > = (props) => {
   const {
+	onSuccess,
     enableIntro,
     form: formFromProps,
     form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
@@ -91,7 +93,7 @@ export const FormBlock: React.FC<
 
           setIsLoading(false)
           setHasSubmitted(true)
-
+		 onSuccess?.()
           if (confirmationType === 'redirect' && redirect) {
             const { url } = redirect
 

@@ -58,8 +58,8 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   return (
     <picture className={cn(pictureClassName)}>
-      <NextImage
-        alt={alt || ''}
+      {src? (<NextImage
+        alt={alt || 'img'}
         className={cn(imgClassName)}
         fill={fill}
         height={!fill ? height : undefined}
@@ -69,9 +69,9 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         quality={100}
         loading={loading}
         sizes={sizes}
-        src={src}
+        src={src || '/search.jpg'}
         width={!fill ? width : undefined}
-      />
+      />):null}
     </picture>
   )
 }

@@ -1,42 +1,70 @@
 import { useCallback } from 'react'
 import { analytics, AnalyticsEvents } from '../utilities/analytics'
+import type { MixpanelProperties } from '../types/analytics' // 👈 update this path if needed
 
 export const useAnalytics = () => {
-  const trackPageView = useCallback((pageName: string, properties?: Record<string, any>) => {
-    analytics.trackPageView(pageName, properties)
-  }, [])
+  const trackPageView = useCallback(
+    (pageName: string, properties?: MixpanelProperties) => {
+      analytics.trackPageView(pageName, properties)
+    },
+    []
+  )
 
-  const trackButtonClick = useCallback((buttonName: string, properties?: Record<string, any>) => {
-    analytics.trackButtonClick(buttonName, properties)
-  }, [])
+  const trackButtonClick = useCallback(
+    (buttonName: string, properties?: MixpanelProperties) => {
+      analytics.trackButtonClick(buttonName, properties)
+    },
+    []
+  )
 
-  const trackFormSubmit = useCallback((formName: string, properties?: Record<string, any>) => {
-    analytics.trackFormSubmit(formName, properties)
-  }, [])
+  const trackFormSubmit = useCallback(
+    (formName: string, properties?: MixpanelProperties) => {
+      analytics.trackFormSubmit(formName, properties)
+    },
+    []
+  )
 
-  const trackLinkClick = useCallback((linkName: string, properties?: Record<string, any>) => {
-    analytics.trackLinkClick(linkName, properties)
-  }, [])
+  const trackLinkClick = useCallback(
+    (linkName: string, properties?: MixpanelProperties) => {
+      analytics.trackLinkClick(linkName, properties)
+    },
+    []
+  )
 
-  const trackSearch = useCallback((searchTerm: string, properties?: Record<string, any>) => {
-    analytics.trackSearch(searchTerm, properties)
-  }, [])
+  const trackSearch = useCallback(
+    (searchTerm: string, properties?: MixpanelProperties) => {
+      analytics.trackSearch(searchTerm, properties)
+    },
+    []
+  )
 
-  const trackSignUp = useCallback((properties?: Record<string, any>) => {
-    analytics.trackSignUp(properties)
-  }, [])
+  const trackSignUp = useCallback(
+    (properties?: MixpanelProperties) => {
+      analytics.trackSignUp(properties)
+    },
+    []
+  )
 
-  const trackLogin = useCallback((properties?: Record<string, any>) => {
-    analytics.trackLogin(properties)
-  }, [])
+  const trackLogin = useCallback(
+    (properties?: MixpanelProperties) => {
+      analytics.trackLogin(properties)
+    },
+    []
+  )
 
-  const trackLogout = useCallback((properties?: Record<string, any>) => {
-    analytics.trackLogout(properties)
-  }, [])
+  const trackLogout = useCallback(
+    (properties?: MixpanelProperties) => {
+      analytics.trackLogout(properties)
+    },
+    []
+  )
 
-  const identify = useCallback((userId: string, userProperties?: Record<string, any>) => {
-    analytics.identify(userId, userProperties)
-  }, [])
+  const identify = useCallback(
+    (userId: string, userProperties?: MixpanelProperties) => {
+      analytics.identify(userId, userProperties)
+    },
+    []
+  )
 
   const reset = useCallback(() => {
     analytics.reset()
